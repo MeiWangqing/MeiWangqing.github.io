@@ -26,3 +26,52 @@ dp[i][j]代表取第i堆到第j堆的最大获胜分数,dp[i][j]是Math.max(pile
         return sum;
     }
 ```
+
+## 三角形最小路径和
+对于每个位置,长度为Math.min(上位置,左上位置)
+可以使用从上到下或者从下到上的算法
+
+```
+    int[][] nums;
+
+    public int minimumTotal(List<List<Integer>> triangle) {
+        nums = new int[triangle.size()][triangle.get(triangle.size() - 1).size()];
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums[0].length; j++) {
+                nums[i][j] = Integer.MAX_VALUE;
+            }
+        }
+
+        for (int i = 0; i < triangle.size(); i++) {
+            for (int j = 0; j < triangle.get(i).size(); j++) {
+                nums[i][j] = triangle.get(i).get(j);
+            }
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j <= i; j++) {
+                nums[i][j] += getNum(i,j);
+            }
+        }
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            min = Math.min(min, nums[nums.length - 1][i]);
+        }
+        return min;
+    }
+
+
+    private int getNum(int i,int j) {
+        if (i == 0 && j == 0) {
+            return 0;
+        }
+        if (j == 0) {
+            return nums[i - 1][j];
+        }
+        if (i == j) {
+            return nums[i - 1][j - 1];
+        }
+        return  Math.min(nums[i - 1][j], nums[i - 1][j - 1]);
+    }
+
+```
